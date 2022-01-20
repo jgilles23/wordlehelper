@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--HTML and basic JavaScript copied from https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript/Create_the_Canvas_and_draw_on_it-->
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Durak Game</title>
+    <style>
+        * {
+            --wordWidth: 100vw;
+            --tileWidth: calc(var(--wordWidth) / 8);
+            --controlWidth: calc(var(--tileWidth) / 2);
+            padding: 0;
+            margin: 0;
+        }
+
+        .line {
+            width: 100vw;
+            margin-top: 5vw;
+            margin-bottom: 5vw;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            -webkit-user-select: none;
+            /* Safari */
+            -moz-user-select: none;
+            /* Firefox */
+            -ms-user-select: none;
+            /* IE10+/Edge */
+            user-select: none;
+            /* Standard */
+        }
+
+        /* .lineControls {
+            display: flex;
+            flex-flow: row wrap;
+            align-content: space-between;
+        } */
+
+        .control {
+            font-weight: normal;
+            background-color: lightgrey;
+            border: calc(var(--controlWidth) / 15) solid black;
+            font-size: calc(var(--controlWidth)*0.7);
+            /* line-height: calc(var(--controlWidth)); */
+            height: calc(var(--controlWidth));
+            width: calc(var(--controlWidth));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* text-align: center; */
+        }
+
+        /* .break {
+            flex-basis: 100%;
+            height: 0;
+        } */
+
+
+        .tile {
+            font-weight: bold;
+            background-color: lightgrey;
+            border: calc(var(--tileWidth) / 17) solid black;
+            font-size: calc(var(--tileWidth));
+            line-height: calc(var(--tileWidth));
+            height: calc(var(--tileWidth));
+            width: calc(var(--tileWidth));
+            border-radius: calc(var(--tileWidth) / 4);
+            text-align: center;
+        }
+
+        .generate {
+            font-weight: bold;
+            background-color: DodgerBlue;
+            border: calc(var(--tileWidth) / 17) solid black;
+            font-size: 4vw;
+            padding: 0.5vw 1vw;
+            border-radius: 3vw;
+        }
+    </style>
+</head>
+
+<body>
+    <p style="text-align:center">Durak Card Game v0.6.3 - Online Play</p>
+
+    <!-- <canvas id="myCanvas"></canvas> -->
+    <!-- <script type="module" src="./durak.js"></script> -->
+
+    <p style="text-align:center">
+        <a style="text-align:center" href="https://en.wikipedia.org/wiki/Durak">Rules</a>
+    </p>
+
+    <script src="./main.js"></script>
+
+    <div id="main"></div>
+
+    <!-- <div class="line">
+        <div class="line">
+            <div class="tile">A</div>
+            <div class="tile">B</div>
+            <div class="tile">C</div>
+            <div class="tile">D</div>
+            <div  class="tile">E</div>
+            <div class="lineControls">
+                <div id="clear" class="control">&#9998;</div>
+                <div class="break"></div>
+                <div id="enterWord" class="control">&#9000;</div>
+            </div>
+        </div>
+
+    </div> -->
+
+    <!-- <div class="line">
+        <div class="generate">Generate Word (fake)</div>
+    </div> -->
+
+</body>
+
+</html>
