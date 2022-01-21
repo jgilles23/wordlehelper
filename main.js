@@ -1,3 +1,5 @@
+import {Clues} from "./guesser.js"
+
 console.log("Welcome to the console for Wordle Helper!");
 
 class WordLine {
@@ -34,12 +36,16 @@ class WordLine {
                 continueAsking = false;
                 //Result of user input here
                 newWord = newWord.toUpperCase();
-                this.tiles.forEach(function (tile, index) {
-                    tile.setCharacter(newWord[index])
-                    tile.setColor("k");
-                })
+                this.setWord(newWord);
             }
         }
+    }
+    setWord(word) {
+        word = word.toUpperCase()
+        this.tiles.forEach(function (tile, index) {
+            tile.setCharacter(word[index])
+            tile.setColor("k");
+        })
     }
     makeUneditable() {
         if (!this.editable) {
@@ -158,20 +164,54 @@ class Game {
         //Create space for making lines
         this.lines = []
         this.wordsDiv = document.createElement("div");
-        document.body.appendChild(this.wordsDiv, this.mainDiv)
+        document.body.appendChild(this.wordsDiv, this.mainDiv);
         //Space for the generate words button
         this.generate = new GenerateLine(this);
-        document.body.appendChild(this.generate.div, this.mainDiv)
+        document.body.appendChild(this.generate.div, this.mainDiv);
         //Generate the first word
-        this.makeLine()
+        this.makeBlankLine();
+        this.lines[0].setWord("soare");
     }
     makeLine() {
+        let word = this.calculate_line()
+        this.makeBlankLine()
+        // console.log(word)
+        this.lines[this.lines.length-1].setWord(word)
+    }
+    calculate_line() {
+        //Get words and clues
+        let words_with_clues = this.get_words_and_clues()
+        //Make a clues class
+        let clues = new Clues();
+        for (let word in words_with_clues) {
+            clues.addClue(word, words_with_clues[word])
+        }
+        //Calculate the next move
+        console.log(clues.greens, clues.yellows, clues.reds)
+        let raw = clues.best_guess()
+        return raw[0]
+    }
+    makeBlankLine() {
         //Make the old lines no longer editable
         this.lines.forEach(line => line.makeUneditable())
         //Add the new line
         let newLine = new WordLine(this);
         this.lines.push(newLine);
         this.wordsDiv.appendChild(newLine.div);
+    }
+    get_words_and_clues() {
+        let words_with_clues = {}
+        this.lines.forEach(line => {
+            let word = ""
+            let clues = ""
+            line.tiles.forEach( tile => {
+                word = word + tile.character;
+                clues = clues + tile.color;
+            })
+            word =word.toLowerCase()
+            words_with_clues[word] = clues
+        })
+        return words_with_clues
     }
 }
 
@@ -180,7 +220,7 @@ function click(lineID, elementID) {
 }
 
 let mainDiv = document.getElementById("main");
-game = new Game(mainDiv);
+let game = new Game(mainDiv);
 
 // a = new GenerateLine(game)
 // document.body.appendChild(a.div, mainDiv)
