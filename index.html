@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Wordle Helper</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         * {
@@ -73,23 +74,32 @@
             text-align: center;
         }
 
-        .generate {
+        .button {
             font-weight: bold;
             background-color: DodgerBlue;
-            border: calc(var(--tileWidth) / 17) solid black;
+            border: calc(var(--tileWidth) / 30) solid black;
             font-size: 4vw;
             padding: 0.5vw 1vw;
             border-radius: 3vw;
+        } 
+
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 
 <body>
-    <p style="text-align:center">Wordle Helper v0.5.5</p>
+    <p style="text-align:center">Wordle Helper v0.5.6</p>
 
     <script src="./main.js" type="module"></script>
 
     <div id="main"></div>
+
+    <div class="line">
+        <div class="button">reset</div>
+        <div class="button">options</div>
+    </div>
 </body>
 
 </html>

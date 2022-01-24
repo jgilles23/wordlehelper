@@ -151,10 +151,10 @@ class GenerateLine {
         this.div = document.createElement("div");
         this.div.className = "line";
         this.buttonDiv = document.createElement("div");
-        this.buttonDiv.className = "generate";
+        this.buttonDiv.className = "button";
         this.div.appendChild(this.buttonDiv);
         this.buttonDiv.onclick = function() {game.makeLine()};
-        this.buttonDiv.innerHTML = "Generate Word";
+        this.buttonDiv.innerHTML = "generate word";
     }
 }
 
