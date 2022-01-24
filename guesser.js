@@ -25,6 +25,10 @@ function count_letters(word) {
     return counts
 }
 
+function replace(word, i, replacement = "?") {
+    return word.substr(0, i) + replacement + word.substr(i + 1)
+}
+
 export class Clues {
     constructor() {
         //Letter must be in these positions
@@ -82,7 +86,7 @@ export class Clues {
             if (word[i] == solution[i]) {
                 //Occurs at the correct position
                 clues[i] = "g"
-                solution = solution.substr(0, i) + "?" + solution.substr(i + 1)
+                solution = replace(solution, i)
             }
         }
         for (let i = 0; i < 5; i++) {
@@ -90,14 +94,19 @@ export class Clues {
                 //skip greens
                 continue
             }
-            let count = this.countOccurances(solution, word[i])
-            if (count == 0) {
-                //No more occurances in the string
+            let j = 0;
+            while (j < 5) {
+                if (solution[j] == word[i]) {
+                    //More occurances in the string, but not in this position
+                    clues[i] = "y"
+                    solution = replace(solution, j)
+                    break //Exit while loop
+                }
+                j++
+            }
+            if (j == 5) {
+                //Loop did not break, no more occurances in the string
                 clues[i] = "k"
-            } else {
-                //More occurances in the string, but not in this position
-                clues[i] = "y"
-                solution = solution.substr(0, i) + "?" + solution.substr(i + 1)
             }
         }
         return clues
@@ -109,7 +118,7 @@ export class Clues {
     addGuess() {
 
     }
-    checkFit(word, verbose=false) {
+    checkFit(word, verbose = false) {
         let word_count = this.word_counts[word]
         if (word_count === undefined) {
             word_count = count_letters(word)
@@ -119,12 +128,12 @@ export class Clues {
         for (let i = 0; i < 5; i++) {
             if (this.greens[i] !== undefined && this.greens[i] != word[i]) {
                 //Does not match one of the greens
-                if (verbose) {console.log("false on green:", i)}
+                if (verbose) { console.log("false on green:", i) }
                 return false
             }
             if (this.reds[i].has(word[i])) {
                 //Matches one of the reds
-                if (verbose) {console.log("false on red:", i)}
+                if (verbose) { console.log("false on red:", i) }
                 return false
             }
         }
@@ -144,21 +153,21 @@ export class Clues {
         // }
         for (let letter in this.yellows) {
             if (this.yellows[letter] == 10) {
-                if (letter in word_count){
-                    if (verbose) {console.log("false on none allowed (10):", letter)}
+                if (letter in word_count) {
+                    if (verbose) { console.log("false on none allowed (10):", letter) }
                     return false
                 }
-            } else if (!(letter in word_count)){
-                if (verbose) {console.log("false on not in word:", letter)}
+            } else if (!(letter in word_count)) {
+                if (verbose) { console.log("false on not in word:", letter) }
                 return false
             } else if (this.yellows[letter] > 10) {
                 if (this.yellows[letter] - 10 != word_count[letter]) {
-                    if (verbose) {console.log("false on only exact allowed:", letter)}
+                    if (verbose) { console.log("false on only exact allowed:", letter) }
                     return false
                 }
             } else {
                 if (this.yellows[letter] > word_count[letter]) {
-                    if (verbose) {console.log("false on not enough:", letter)}
+                    if (verbose) { console.log("false on not enough:", letter) }
                     return false
                 }
             }
@@ -185,6 +194,7 @@ export class Clues {
         return new_words
     }
     get_scores(guesses, solutions, checks) {
+        console.log("num guesses", guesses.length, "num solutions", solutions.length)
         //Iterate through all possible clues
         let guesses_average_remaining = {}
         guesses.forEach((guess, i) => {
@@ -247,13 +257,13 @@ export class Clues {
     }
     best_guess() {
         // console.log(this.yellows)
-        let wv = this.filter_words(this.words_valid);
-        // let wv = this.words_valid;
+        // let wv = this.filter_words(this.words_valid);
+        let wv = this.words_valid;
         let ws = this.filter_words(this.words_solutions);
         console.log("remaining solutions", ws.length, ws);
         //Calculate the best guess
         let ret = this.get_scores(wv, ws, ws);
-        console.log(ret[1].slice(0,10))
+        console.log(ret[1].slice(0, 10))
         return ret[1]
     }
 }
@@ -265,19 +275,19 @@ function calculate_first_guess() {
     let ret
 
     console.log("EPOCH 1");
-    ss = Clues.sample(words_solutions, 2, 25);
+    ss = Clues.sample(wo_solutions, 2, 25);
     ret = Clues.get_scores(words_valid, ss, ss);
 
     console.log("EPOCH 2");
-    ss = Clues.sample(words_solutions, sample_start + 131, 6);
+    ss = Clues.sample(wo_solutions, sample_start + 131, 6);
     ret = Clues.get_scores(ret[0].slice(0, 2000), ss, ss);
 
     console.log("EPOCH 3");
-    ss = Clues.sample(words_solutions, sample_start + 211, 2);
+    ss = Clues.sample(wo_solutions, sample_start + 211, 2);
     ret = Clues.get_scores(ret[0].slice(0, 200), ss, ss);
 
     console.log("EPOCH 4");
-    ss = words_solutions;
+    ss = wo_solutions;
     ret = Clues.get_scores(ret[0].slice(0, 20), ss, ss);
 
     console.log(ret[1].slice(0, 10));
@@ -298,8 +308,8 @@ function calculate_first_guess() {
 //     222.79179265658746
 //   ]
 
-if (false) {
-    calculate_first_guess
+if (true) {
+    calculate_first_guess()
 }
 
 if (false) {
@@ -317,7 +327,7 @@ if (false) {
     console.log(ret.slice(0, 10))
 }
 
-// let clues = new Clues(word_counts)
+// let clues = new Clues()
 // clues.addClue("irate", "kykyk")
-// console.log(clues.checkFit("cigar"))
-// clues.best_guess()
+// console.log(clues.best_guess().slice(0,10))
+

@@ -1,4 +1,4 @@
-import {Clues} from "./guesser.js"
+import {Sieve_Colors, best_move_jump} from "./guesser3.js"
 
 console.log("Welcome to the console for Wordle Helper!");
 
@@ -170,7 +170,7 @@ class Game {
         document.body.appendChild(this.generate.div, this.mainDiv);
         //Generate the first word
         this.makeBlankLine();
-        this.lines[0].setWord("soare");
+        this.lines[0].setWord("roate"); //soare
     }
     makeLine() {
         let word = this.calculate_line()
@@ -181,15 +181,13 @@ class Game {
     calculate_line() {
         //Get words and clues
         let words_with_clues = this.get_words_and_clues()
-        //Make a clues class
-        let clues = new Clues();
+        let sieves = []
         for (let word in words_with_clues) {
-            clues.addClue(word, words_with_clues[word])
+            sieves.push(new Sieve_Colors(word, words_with_clues[word]))
         }
         //Calculate the next move
-        console.log(clues.greens, clues.yellows, clues.reds)
-        let raw = clues.best_guess()
-        return raw[0]
+        let next_word = best_move_jump(sieves)
+        return next_word
     }
     makeBlankLine() {
         //Make the old lines no longer editable
