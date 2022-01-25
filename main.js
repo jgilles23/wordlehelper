@@ -163,7 +163,7 @@ class Game {
         //Pull the options buttons
         let me = this;
         this.refresh_button = document.getElementById("refresh-button");
-        this.refresh_button.onclick = function(){location.reload()};
+        this.refresh_button.onclick = function(){me.reload()};
         this.clear_button = document.getElementById("clear-button");
         this.clear_button.onclick = function(){me.clearLine()};
         this.edit_button = document.getElementById("edit-button");
@@ -171,6 +171,9 @@ class Game {
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
+    }
+    reload() {
+        location.reload();
     }
     makeLine() {
         let word = this.calculate_line()
@@ -221,10 +224,6 @@ class Game {
         })
         return words_with_clues
     }
-}
-
-function click(lineID, elementID) {
-
 }
 
 let mainDiv = document.getElementById("main_div");
