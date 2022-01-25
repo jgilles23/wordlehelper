@@ -161,13 +161,13 @@ class Game {
         this.generate = new GenerateLine(this);
         this.mainDiv.appendChild(this.generate.div);
         //Pull the options buttons
-        let me = this
-        this.refresh_button = document.getElementById("refresh-button")
-        this.refresh_button.onclick = function(){location.reload()}
-        this.clear_button = document.getElementById("clear-button")
-        this.clear_button.onclick = function(){me.clearLine()}
-        this.edit_button = document.getElementById("edit-button")
-        this.edit_button.onclick = function(){me.lines.at(-1).typewriter()}
+        let me = this;
+        this.refresh_button = document.getElementById("refresh-button");
+        this.refresh_button.onclick = function(){location.reload()};
+        this.clear_button = document.getElementById("clear-button");
+        this.clear_button.onclick = function(){me.clearLine()};
+        this.edit_button = document.getElementById("edit-button");
+        this.edit_button.onclick = function(){me.lines.at(-1).typewriter()};
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
