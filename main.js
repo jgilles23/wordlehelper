@@ -16,8 +16,8 @@ class WordLine {
             this.div.appendChild(newTile.div)
         }
         //Add Control
-        this.control = new Typewriter(this)
-        this.div.appendChild(this.control.div)
+        // this.control = new Typewriter(this)
+        // this.div.appendChild(this.control.div)
     }
     typewriter() {
         let basePrompt = "Enter a new 5 letter word.";
@@ -54,19 +54,11 @@ class WordLine {
         this.editable = false;
         //Change colors of the tiles
         this.tiles.forEach( tile => tile.setColor());
-        //Remove the old button, add a new one
-        this.div.removeChild(this.div.lastChild);
-        this.control = new Pencil(this);
-        this.div.appendChild(this.control.div);
     }
     makeEditable() {
         this.editable = true;
         //Change the colors of the tiles
         this.tiles.forEach( tile => tile.setColor());
-        //Remove the old button, add a new one
-        this.div.removeChild(this.div.lastChild);
-        this.control = new Typewriter(this);
-        this.div.appendChild(this.control.div);
     }
 }
 
@@ -149,7 +141,7 @@ class GenerateLine {
     constructor(game) {
         this.game = game;
         this.div = document.createElement("div");
-        this.div.className = "line";
+        this.div.className = "line generate-line";
         this.buttonDiv = document.createElement("div");
         this.buttonDiv.className = "clickButton";
         this.div.appendChild(this.buttonDiv);
@@ -164,10 +156,18 @@ class Game {
         //Create space for making lines
         this.lines = []
         this.wordsDiv = document.createElement("div");
-        document.body.appendChild(this.wordsDiv, this.mainDiv);
+        this.mainDiv.appendChild(this.wordsDiv);
         //Space for the generate words button
         this.generate = new GenerateLine(this);
-        document.body.appendChild(this.generate.div, this.mainDiv);
+        this.mainDiv.appendChild(this.generate.div);
+        //Pull the options buttons
+        let me = this
+        this.refresh_button = document.getElementById("refresh-button")
+        this.refresh_button.onclick = function(){location.reload()}
+        this.clear_button = document.getElementById("clear-button")
+        this.clear_button.onclick = function(){me.clearLine()}
+        this.edit_button = document.getElementById("edit-button")
+        this.edit_button.onclick = function(){me.lines.at(-1).typewriter()}
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
@@ -177,6 +177,16 @@ class Game {
         this.makeBlankLine()
         // console.log(word)
         this.lines[this.lines.length-1].setWord(word)
+    }
+    clearLine() {
+        //Delete the most recent line from the screen
+        if (this.lines.length > 1) {
+            this.wordsDiv.removeChild(this.lines.at(-1).div)
+            this.lines.pop()
+            this.lines.at(-1).makeEditable()
+        } else {
+            this.lines.at(-1).setWord("?????")
+        }
     }
     calculate_line() {
         //Get words and clues
@@ -217,7 +227,7 @@ function click(lineID, elementID) {
 
 }
 
-let mainDiv = document.getElementById("main");
+let mainDiv = document.getElementById("main_div");
 let game = new Game(mainDiv);
 
 // a = new GenerateLine(game)

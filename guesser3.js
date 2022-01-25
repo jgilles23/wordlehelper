@@ -345,5 +345,6 @@ if (false) {
     console.log(s)
 }
 
+
 //roate 60.42462203023758
 //soare 62.30107991360691

@@ -5,26 +5,18 @@
 <head>
     <meta charset="utf-8" />
     <title>Wordle Helper</title>
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/x-icon" href="./icons/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         * {
-            --wordWidth: 100vw;
-            --tileWidth: calc(var(--wordWidth) / 8);
+            --lrMargin: 5vw;
+            --wordWidth: calc(100vw - 2*var(--lrMargin));
+            --tileWidth: calc(var(--wordWidth) / 7);
             --controlWidth: calc(var(--tileWidth) / 2);
+            font-family: 'Courier New', monospace;
             padding: 0;
             margin: 0;
             touch-action: pan-y;
-        }
-
-        .line {
-            width: 100vw;
-            margin-top: 5vw;
-            margin-bottom: 5vw;
-            font-family: 'Courier New', monospace;
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
             -webkit-user-select: none;
             /* Safari */
             -moz-user-select: none;
@@ -35,6 +27,41 @@
             /* Standard */
         }
 
+        .top-line {
+            padding-top: 1vw;
+            padding-bottom: 1vw;
+            padding-left: var(--lrMargin);
+            padding-right: var(--lrMargin);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 6vw;
+            background-color: lightgrey;
+        }
+        .top-line-buttons {
+            display: flex;
+            gap: 3vw;
+        }
+        .top-line-button {
+            /* width: 4vw; */
+            height: 4vw;
+        }
+
+        .line {
+            width: var(--wordWidth);
+            margin-top: 5vw;
+            margin-bottom: 5vw;
+            padding-left: calc((100vw - var(--wordWidth))/2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .generate-line {
+            justify-content: center;
+        }
+
         /* .lineControls {
             display: flex;
             flex-flow: row wrap;
@@ -42,6 +69,7 @@
         } */
 
         .control {
+            font-family: 'Arial', monospace;
             font-weight: normal;
             background-color: lightgrey;
             border: calc(var(--controlWidth) / 15) solid black;
@@ -81,25 +109,32 @@
             font-size: 4vw;
             padding: 0.5vw 1vw;
             border-radius: 3vw;
-        } 
+        }
 
         .hidden {
             display: none;
         }
+
     </style>
 </head>
 
 <body>
-    <p style="text-align:center">Wordle Helper v0.5.7</p>
+    <div class="top-line">
+        <div>Wordle Helper</div>
+        <div class="top-line-buttons">
+            <img id="refresh-button" src="./icons/redo-arrow.png" class="top-line-button"></img>
+            <img id="clear-button" src="./icons/math-multiplication.png" class="top-line-button" class="icon"></img>
+            <img id="edit-button" src="./icons/edit-pen.png" class="top-line-button"></img>
+            <!-- <img id="help-button" src="./icons/question-mark.png" class="top-line-button"></img> -->
+        </div>
+    </div>
+
+    <div id="main_div"></div>
 
     <script src="./main.js" type="module"></script>
+    
+    <div style="text-align: center">v0.6.0</div>
 
-    <div id="main"></div>
-
-    <!-- <div class="line">
-        <div class="button">reset</div>
-        <div class="button">options</div>
-    </div> -->
 </body>
 
 </html>
