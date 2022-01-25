@@ -90,7 +90,7 @@ class Sieve_Base {
 }
 
 //Class to store sieves to be applied to future checks
-class Sieve extends Sieve_Base{
+class Sieve extends Sieve_Base {
     constructor(solution, guess) {
         //Create a sieve that can be tested aganist additional checks
         //The input solution and guess must be of class Word
@@ -343,6 +343,32 @@ if (false) {
     //Check that the sieves work
     let s = new Sieve_Colors("soonx", "kyykk")
     console.log(s)
+}
+
+if (false) {
+    let types = {}
+    for (let a = 0; a < solutions.length; a++) {
+        let inds = [100, 1112, a]
+        let permutations = [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]]
+        let results = []
+        for (let perm of permutations) {
+            let [i, j, k] = perm
+            let x = inds[i]
+            let y = inds[j]
+            let z = inds[k]
+            let guess = solutions[x]
+            let solution = solutions[y]
+            let check = solutions[z]
+            let sieve = new Sieve(solution, guess)
+            results.push(sieve.test(check))
+        }
+        let results_string = results.join("-")
+        if (types[results_string] === undefined) {
+            types[results_string] = 0
+        }
+        types[results_string] += 1
+    }
+    console.log(types)
 }
 
 
