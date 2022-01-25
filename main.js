@@ -167,7 +167,7 @@ class Game {
         this.clear_button = document.getElementById("clear-button");
         this.clear_button.onclick = function(){me.clearLine()};
         this.edit_button = document.getElementById("edit-button");
-        this.edit_button.onclick = function(){me.lines.at(-1).typewriter()};
+        this.edit_button.onclick = function(){me.lines.slice(-1)[0].typewriter()};
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
@@ -184,11 +184,11 @@ class Game {
     clearLine() {
         //Delete the most recent line from the screen
         if (this.lines.length > 1) {
-            this.wordsDiv.removeChild(this.lines.at(-1).div)
+            this.wordsDiv.removeChild(this.lines.slice(-1)[0].div)
             this.lines.pop()
-            this.lines.at(-1).makeEditable()
+            this.lines.slice(-1)[0].makeEditable()
         } else {
-            this.lines.at(-1).setWord("?????")
+            this.lines.slice(-1)[0].setWord("?????")
         }
     }
     calculate_line() {
