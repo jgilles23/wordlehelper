@@ -10,10 +10,12 @@
     <style>
         * {
             --wordWidth: 85vmin;
-            --tbSpace: 4vmin;
+            --tbSpace: 2vmin;
+            --tbSpaceEditable: calc(var(--tbSpace)*4);
             --lrMargin: calc((100vw - var(--wordWidth))/2);
-            --tileWidth: calc(var(--wordWidth) / 7);
-            font-family: 'Courier New', monospace;
+            --tileWidth: calc(var(--wordWidth) / 5.5);
+            /* font-family: 'Courier New', monospace; */
+            font-family: 'Arial';
             padding: 0;
             margin: 0;
             -webkit-user-select: none;
@@ -51,46 +53,31 @@
         .line {
             width: var(--wordWidth);
             padding-top: var(--tbSpace);
-            /* padding-bottom: var(--tbSpace); */
             padding-left: var(--lrMargin);
             padding-right: var(--lrMargin);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* background-color: lightgrey; */
+        }
+
+        .editable {
+            padding-top: var(--tbSpaceEditable);
+        }
+
+        .uneditable {
+            padding-top: var(--tbSpace);
         }
 
         .generate-line {
             justify-content: center;
+            padding-top: calc(var(--tbSpaceEditable));
         }
-
-        .control {
-            font-family: 'Arial', monospace;
-            font-weight: normal;
-            background-color: lightgrey;
-            border: calc(var(--controlWidth) / 15) solid black;
-            font-size: calc(var(--controlWidth)*0.7);
-            /* line-height: calc(var(--controlWidth)); */
-            height: calc(var(--controlWidth));
-            width: calc(var(--controlWidth));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* text-align: center; */
-        }
-
-        /* .break {
-            flex-basis: 100%;
-            height: 0;
-        } */
-
 
         .tile {
             font-weight: bold;
-            background-color: lightgrey;
-            border: calc(var(--tileWidth) / 17) solid black;
-            font-size: calc(var(--tileWidth));
+            background-color: rgb(209, 179, 6);
+            /* border: calc(var(--tileWidth) / 17) solid black; */
+            font-size: calc(var(--tileWidth)*0.70);
             line-height: calc(var(--tileWidth));
             height: calc(var(--tileWidth));
             width: calc(var(--tileWidth));
@@ -100,11 +87,13 @@
 
         .clickButton {
             font-weight: bold;
-            background-color: DodgerBlue;
-            border: calc(var(--tileWidth) / 30) solid black;
+            background-color: lightgrey;
+            /* border: calc(var(--tileWidth) / 30) solid black; */
             font-size: 4vmin;
-            padding: 0.5vmin 1vmin;
+            padding: 2vmin 4vmin;
             border-radius: 3vmin;
+            text-align: center;
+            width: calc(var(--wordWidth)*1);
         }
 
         .hidden {
@@ -129,7 +118,7 @@
 
     <script src="./main.js" type="module"></script>
     
-    <div style="text-align: center; font-size: 3vmin">v0.6.6</div>
+    <div style="text-align: center; font-size: 3vmin">v0.7.0</div>
 
 </body>
 

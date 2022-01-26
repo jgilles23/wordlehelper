@@ -89,6 +89,6 @@ for (let i = 1; i <= M; i++) {
 
 // console.log(prob_by_ln(120,1000,0.1))
 
-if (true) {
+if (false) {
     console.log(prob_by_ln(2,3,0.1))
 }

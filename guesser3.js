@@ -202,7 +202,7 @@ export class Sieve_Colors extends Sieve_Base {
     }
 }
 
-export function best_move_jump(primary_sieves = []) {
+export function best_move_jump(primary_sieves = [], return_others) {
     let my_solutions = solutions.filter(solution => {
         for (let sieve of primary_sieves) {
             if (sieve.test(solution) === false) {
@@ -295,7 +295,27 @@ export function best_move_jump(primary_sieves = []) {
         }
     }
     console.log("BEST:",best_word, "Score", best_score, "Words", best_score * my_solutions.length, "Breaks", break_count, "No Breaks", no_break_count)
-    return best_word
+    if (return_others) {
+        //Calculate if any of the colors of the best guess are guarenteed green
+        let color = ["k", "k", "k", "k", "k"]
+        for (let i = 0; i < 5; i++) {
+            let break_flag = false
+            for (let word of my_solutions) {
+                if (best_word[i] !== word.word[i]) {
+                    break_flag = true
+                    break
+                }
+            }
+            if (break_flag === false) {
+                color[i] = "g"
+            }
+        }
+        color = color.join("")
+        //Return the guess at the colors in the word
+        return [best_word, color]
+    } else {
+        return best_word
+    }
 }
 
 // best_move()

@@ -15,9 +15,8 @@ class WordLine {
             this.tiles.push(newTile)
             this.div.appendChild(newTile.div)
         }
-        //Add Control
-        // this.control = new Typewriter(this)
-        // this.div.appendChild(this.control.div)
+        //Make Editable
+        this.makeEditable()
     }
     typewriter() {
         let basePrompt = "Enter a new 5 letter word.";
@@ -40,14 +39,15 @@ class WordLine {
             }
         }
     }
-    setWord(word) {
+    setWord(word, color="kkkkk") {
         word = word.toUpperCase()
         this.tiles.forEach(function (tile, index) {
             tile.setCharacter(word[index])
-            tile.setColor("k");
+            tile.setColor(color[index]);
         })
     }
     makeUneditable() {
+        this.div.className = "line uneditable"
         if (!this.editable) {
             return
         }
@@ -56,6 +56,7 @@ class WordLine {
         this.tiles.forEach( tile => tile.setColor());
     }
     makeEditable() {
+        this.div.className = "line editable"
         this.editable = true;
         //Change the colors of the tiles
         this.tiles.forEach( tile => tile.setColor());
@@ -87,13 +88,13 @@ class Tile {
         if (this.line.editable) {
             switch (this.color) {
                 case "k": rgb = "lightgray"; break;
-                case "g": rgb = "lightgreen"; break;
-                case "y": rgb = "Khaki"; break;
+                case "g": rgb = "forestgreen"; break;
+                case "y": rgb = "gold"; break;
             }
         } else {
             switch (this.color) {
                 case "k": rgb = "darkgray"; break;
-                case "g": rgb = "green"; break;
+                case "g": rgb = "forestgreen"; break;
                 case "y": rgb = "gold"; break;
             }
         }
@@ -141,12 +142,12 @@ class GenerateLine {
     constructor(game) {
         this.game = game;
         this.div = document.createElement("div");
-        this.div.className = "line generate-line";
+        this.div.className = "line generate-line uneditable";
         this.buttonDiv = document.createElement("div");
         this.buttonDiv.className = "clickButton";
         this.div.appendChild(this.buttonDiv);
         this.buttonDiv.onclick = function() {game.makeLine()};
-        this.buttonDiv.innerHTML = "generate word";
+        this.buttonDiv.innerHTML = "Generate Word";
     }
 }
 
@@ -176,10 +177,10 @@ class Game {
         location.reload();
     }
     makeLine() {
-        let word = this.calculate_line()
+        let [word, color] = this.calculate_line()
         this.makeBlankLine()
         // console.log(word)
-        this.lines[this.lines.length-1].setWord(word)
+        this.lines[this.lines.length-1].setWord(word, color)
     }
     clearLine() {
         //Delete the most recent line from the screen
@@ -199,8 +200,8 @@ class Game {
             sieves.push(new Sieve_Colors(word, words_with_clues[word]))
         }
         //Calculate the next move
-        let next_word = best_move_jump(sieves)
-        return next_word
+        let [next_word, colors] = best_move_jump(sieves, true)
+        return [next_word, colors]
     }
     makeBlankLine() {
         //Make the old lines no longer editable
