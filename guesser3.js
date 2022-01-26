@@ -198,6 +198,7 @@ export class Sieve_Colors extends Sieve_Base {
                 this.at_least[c] = gy_count[c]
             }
         }
+        console.log(this)
     }
 }
 
@@ -213,10 +214,10 @@ export function best_move_jump(primary_sieves = []) {
     // my_solutions = solutions.slice(0,5) //Taking down the results
     console.log("solutions remaining", my_solutions.length, "sample", my_solutions.slice(0, 5).map(a => a.word))
     //Prepare a list to step through so that we can go quickly
-    let pairs = Array(my_solutions.length ** 2)
+    let pairs = Array(parseInt((my_solutions.length ** 2) / 2 + my_solutions.length / 2))
     let k = 0
     for (let i = 0; i < my_solutions.length; i++) {
-        for (let j = 0; j < my_solutions.length; j++) {
+        for (let j = i; j < my_solutions.length; j++) {
             pairs[k] = [i, j]
             k++
         }
@@ -234,95 +235,66 @@ export function best_move_jump(primary_sieves = []) {
     console.log("Pairs mixed")
     //Do the rest of the stuff
     let i = 0
-    let break_count = [0, 0, 0, 0, 0]
+    let breaks = [200, 1000, 5000, 20000, 200000]
+    let break_count = breaks.map(x => 0)
+    let no_break_count = 0
     let best_word
     let best_score = 1.1
     for (let guess of valids) {
         // if (i % 1 == 0) { console.log(i, "of", valids.length, guess.word) }
         let count = 0
-        // let z = seed
         let sieves = new Array(my_solutions.length)
         let j = 0
         for (let [x, y] of pairs) {
-            if (j + 1 == 200) {
-                // v=count, n=i+1, p=best_score
-                if (prob_by_ln(count, j + 1, best_score) < 0.001) {
-                    //Not likely to be correct, stop searching
-                    // console.log("break", guess.word)
-                    break_count[0]++
-                    // console.log("break_1")
-                    break;
+            let break_flag = false
+            for (let break_ind = 0; break_ind < breaks.length; break_ind++) {
+                if ((j + 1 === breaks[break_ind]) || (j + 2 === breaks[break_ind])) {
+                    if (prob_by_ln(count, j + 1, best_score) < 0.001) {
+                        //Not likely to be correct, stop searching
+                        // console.log("break", guess.word)
+                        break_count[break_ind]++
+                        break_flag = true
+                        break
+                    }
                 }
             }
-            if (j + 1 == 1000) {
-                // v=count, n=i+1, p=best_score
-                if (prob_by_ln(count, j + 1, best_score) < 0.001) {
-                    //Not likely to be correct, stop searching
-                    // console.log("break", guess.word)
-                    break_count[1]++
-                    // console.log("break_2")
-                    break;
-                }
-            }
-            if (j + 1 == 5000) {
-                // v=count, n=i+1, p=best_score
-                if (prob_by_ln(count, j + 1, best_score) < 0.001) {
-                    //Not likely to be correct, stop searching
-                    // console.log("break", guess.word)
-                    break_count[2]++
-                    // console.log("break_3")
-                    break;
-                }
-            }
-            if (j + 1 == 20000) {
-                // v=count, n=i+1, p=best_score
-                if (prob_by_ln(count, j + 1, best_score) < 0.001) {
-                    //Not likely to be correct, stop searching
-                    // console.log("break", guess.word)
-                    break_count[3]++
-                    // console.log("break_4")
-                    break;
-                }
-            }
-            if (j + 1 == 200000) {
-                // v=count, n=i+1, p=best_score
-                if (prob_by_ln(count, j + 1, best_score) < 0.001) {
-                    //Not likely to be correct, stop searching
-                    // console.log("break", guess.word)
-                    break_count[4]++
-                    // console.log("break_4")
-                    break;
-                }
+            if (break_flag) {
+                break
             }
             let solution = my_solutions[x]
             let check = my_solutions[y]
             if (guess.word === solution.word) {
-                j++
-                continue
+                count += 0
+            } else {
+                if (sieves[x] === undefined) {
+                    sieves[x] = new Sieve(solution, guess)
+                }
+                if (sieves[x].test(check)) {
+                    count += 2
+                }
             }
-            if (sieves[x] === undefined) {
-                sieves[x] = new Sieve(solution, guess)
+            //Up the count by the appropriate amount
+            if (x === y) {
+                j += 1
+            } else {
+                j += 2
             }
-            if (sieves[x].test(check)) {
-                count += 1
-            }
-            j++
         }
         i++
-        if (j === pairs.length) {
+        if (j === my_solutions.length ** 2) {
             //Find the best of the scores, and corresponding word
+            no_break_count += 1 
             let score = count / j
-            if (j > 100000) {
-                console.log("Got to the end with", i, guess.word, "Score", score, "Words", count / my_solutions.length, "Breaks", break_count)
-            }
             if (score < best_score) {
                 best_score = score
                 best_word = guess.word
-                console.log("New Best", best_word, "Score", best_score, "Words", count / my_solutions.length, "Breaks", break_count)
+                console.log("NEW BEST  :", i, guess.word, "Score", score, "Words", count / my_solutions.length, "Breaks", break_count, "No Breaks", no_break_count)
+            } else if (j > 100000) {
+                console.log("- not best:", i, guess.word, "Score", score, "Words", count / my_solutions.length, "Breaks", break_count, "No Breaks", no_break_count)
             }
         }
     }
-    console.log("Best:", best_word, best_score, "words", best_score * my_solutions.length, "breaks", break_count)
+    console.log("BEST:",best_word, "Score", best_score, "Words", best_score * my_solutions.length, "Breaks", break_count, "No Breaks", no_break_count)
     return best_word
 }
 
@@ -331,8 +303,8 @@ export function best_move_jump(primary_sieves = []) {
 //Test cases
 if (false) {
     let sieves = []
-    // sieves.push(new Sieve(new Word("robot"), new Word("soare")))
-    // sieves.push(new Sieve(new Word("crimp"), new Word("sculk")))
+    sieves.push(new Sieve(new Word("build"), new Word("roate")))
+    // sieves.push(new Sieve(new Word("great"), new Word("tweel")))
     // sieves.push(new Sieve(new Word("robot"), new Word("pyres")))
     console.log("SIEVES", sieves)
     // best_move(sieves)
@@ -370,7 +342,6 @@ if (false) {
     }
     console.log(types)
 }
-
 
 //roate 60.42462203023758
 //soare 62.30107991360691

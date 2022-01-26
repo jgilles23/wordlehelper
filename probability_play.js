@@ -88,3 +88,7 @@ for (let i = 1; i <= M; i++) {
 // console.log(prob_at_least(150,1000,0.1))
 
 // console.log(prob_by_ln(120,1000,0.1))
+
+if (true) {
+    console.log(prob_by_ln(2,3,0.1))
+}

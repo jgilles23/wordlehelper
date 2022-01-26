@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         * {
-            --lrMargin: 5vmin;
-            --wordWidth: calc(100vmin - 2*var(--lrMargin));
+            --wordWidth: 85vmin;
+            --tbSpace: 4vmin;
+            --lrMargin: calc((100vw - var(--wordWidth))/2);
             --tileWidth: calc(var(--wordWidth) / 7);
-            --controlWidth: calc(var(--tileWidth) / 2);
             font-family: 'Courier New', monospace;
             padding: 0;
             margin: 0;
@@ -30,6 +30,7 @@
         .top-line {
             padding-top: 1vmin;
             padding-bottom: 1vmin;
+            /* border-bottom: calc(var(--tileWidth) / 17) solid black; */
             padding-left: var(--lrMargin);
             padding-right: var(--lrMargin);
             display: flex;
@@ -44,30 +45,24 @@
             gap: 3vmin;
         }
         .top-line-button {
-            /* width: 4vmin; */
             height: 6vmin;
         }
 
         .line {
             width: var(--wordWidth);
-            margin-top: 5vmin;
-            margin-bottom: 5vmin;
-            padding-left: calc((100vmin - var(--wordWidth))/2);
+            padding-top: var(--tbSpace);
+            /* padding-bottom: var(--tbSpace); */
+            padding-left: var(--lrMargin);
+            padding-right: var(--lrMargin);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: lightgrey;
+            /* background-color: lightgrey; */
         }
 
         .generate-line {
             justify-content: center;
         }
-
-        /* .lineControls {
-            display: flex;
-            flex-flow: row wrap;
-            align-content: space-between;
-        } */
 
         .control {
             font-family: 'Arial', monospace;
@@ -134,7 +129,7 @@
 
     <script src="./main.js" type="module"></script>
     
-    <div style="text-align: center; font-size: 3vmin">v0.6.5</div>
+    <div style="text-align: center; font-size: 3vmin">v0.6.6</div>
 
 </body>
 
