@@ -9,11 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
         * {
-            --wordWidth: 85vmin;
-            --tbSpace: 2vmin;
-            --tbSpaceEditable: calc(var(--tbSpace)*4);
+            --wordWidth: 80vmin;
             --lrMargin: calc((100vw - var(--wordWidth))/2);
             --tileWidth: calc(var(--wordWidth) / 5.5);
+            --tbSpace: calc((var(--wordWidth) - 5*var(--tileWidth))/4);
+            --tbSpaceEditable: calc(var(--tbSpace)*4);
             /* font-family: 'Courier New', monospace; */
             font-family: 'Arial';
             padding: 0;
@@ -30,24 +30,27 @@
         }
 
         .top-line {
-            padding-top: 1vmin;
-            padding-bottom: 1vmin;
+            padding-top: var(--tbSpace);
+            /* padding-bottom: 1vmin; */
             /* border-bottom: calc(var(--tileWidth) / 17) solid black; */
-            padding-left: var(--lrMargin);
-            padding-right: var(--lrMargin);
+            padding-left: calc(var(--lrMargin) - 6vmin);
+            padding-right: calc(var(--lrMargin) - 6vmin);
+            ;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
             font-size: 7vmin;
-            background-color: lightgrey;
+            /* background-color: lightgrey; */
         }
+
         .top-line-buttons {
             display: flex;
             gap: 3vmin;
         }
+
         .top-line-button {
-            height: 6vmin;
+            height: 4vmin;
         }
 
         .line {
@@ -100,25 +103,76 @@
             display: none;
         }
 
+        .help-menu {
+            z-index: 9;
+            width: 100vw;
+            position: absolute;
+            min-height: 100vh;
+            background-color: lightgrey;
+        }
+
+        .help-text {
+            padding-left: var(--lrMargin);
+            padding-right: var(--lrMargin);
+            width: var(--wordWidth);
+            padding-top: var(--tbSpaceEditable);
+            align-self: center;
+            text-align: justify;
+        }
     </style>
 </head>
 
 <body>
+    <!-- Help menu -->
+    <div id="help-menu" class="help-menu hidden">
+        <div class="top-line">
+            <div>Wordle Helper</div>
+            <div class="top-line-buttons">
+                <img id="close-help" src="./icons/math-multiplication.png" class="top-line-button"></img>
+            </div>
+        </div>
+        <div class="help-text">
+            <p>Welcome to Worlde Helper, a program to solve the daily <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a>.</p>
+            <br>
+            <p>
+                To use the program:
+                Enter the suggested word as a guess in Wordle and
+                look at the colors in the response.
+                Tap the letters of the suggestion at this site until their colors match the Wordle response.
+                Finally, tap the "Generate Guess" button to get another guess suggestion.
+                Repeat until you get the correct answer.
+            </p>
+            <br>
+            <p>
+                If the suggested guess is ever "?????" the program does not have an avaliable
+                word that matches the clues provided.
+                Check the clues to ensure they are correct.
+            </p>
+            <br>
+            <p>Menu options (in order): reset page; clear most recent guess;
+                change most recent guess; help menu.</p>
+            <br>
+            <br>
+            <p>Created by Jordan Gilles</p>
+            <p>Version 0.7.1</p>
+        </div>
+    </div>
+
     <div class="top-line">
         <div>Wordle Helper</div>
         <div class="top-line-buttons">
             <img id="refresh-button" src="./icons/redo-arrow.png" class="top-line-button"></img>
             <img id="clear-button" src="./icons/math-multiplication.png" class="top-line-button"></img>
             <img id="edit-button" src="./icons/edit-pen.png" class="top-line-button"></img>
-            <!-- <img id="help-button" src="./icons/question-mark.png" class="top-line-button"></img> -->
+            <img id="help-button" src="./icons/question-mark.png" class="top-line-button"></img>
         </div>
     </div>
 
     <div id="main_div"></div>
 
     <script src="./main.js" type="module"></script>
-    
-    <div style="text-align: center; font-size: 3vmin">v0.7.0</div>
+
+    <!-- <div style="text-align: center; font-size: 3vmin">v0.7.0</div> -->
 
 </body>
 

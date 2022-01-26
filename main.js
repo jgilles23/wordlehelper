@@ -152,8 +152,8 @@ class GenerateLine {
 }
 
 class Game {
-    constructor(mainDiv) {
-        this.mainDiv = mainDiv;
+    constructor() {
+        this.mainDiv = document.getElementById("main_div");
         //Create space for making lines
         this.lines = []
         this.wordsDiv = document.createElement("div");
@@ -169,6 +169,14 @@ class Game {
         this.clear_button.onclick = function(){me.clearLine()};
         this.edit_button = document.getElementById("edit-button");
         this.edit_button.onclick = function(){me.lines.slice(-1)[0].typewriter()};
+        this.help_button = document.getElementById("help-button")
+        this.help_button.onclick = function() {
+            document.getElementById("help-menu").style.display = "initial"
+        }
+        this.help_close = document.getElementById("close-help")
+        this.help_close.onclick = function() {
+            document.getElementById("help-menu").style.display = "none"
+        }
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
