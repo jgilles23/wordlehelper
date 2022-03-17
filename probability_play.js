@@ -82,10 +82,10 @@ for (let i = 1; i <= M; i++) {
 
 // console.log(fact_ln_lookup)
 
-// let eb = 200/2315
-// let N = 1000
-// console.log("expected best", eb)
-// console.log(prob_at_least(150,1000,0.1))
+let eb = 200/2315
+let N = 1000
+console.log("expected best", eb)
+console.log(prob_at_least(11, 100 , 0.1))
 
 // console.log(prob_by_ln(120,1000,0.1))
 

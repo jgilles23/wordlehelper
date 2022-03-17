@@ -19,22 +19,23 @@ class Word {
     }
 }
 
+class GridGenerator {
+    constructor(n) {
+        //n is the length of one of the sides of the grid
+    }
+}
+
+//Class to store and generate solutions
+class Guess {
+
+}
+
 //7717, 6271
 
 //Convert valid words & solutions into Word Class
 let solutions = w_solutions.map(x => new Word(x))
 let valids = w_valid.map(x => new Word(x))
 valids = solutions.concat(valids)
-
-//Shuffle solutions
-// let num_shuffles = w_solutions.length*10
-// for (let i = 0; i < num_shuffles; i++) {
-//     let x = parseInt(Math.random()*w_solutions.length)
-//     let y = parseInt(Math.random()*w_solutions.length)
-//     let a = solutions[x]
-//     solutions[y] = solutions[x]
-//     solutions[x] = a
-// }
 
 class Sieve_Base {
     constructor() {
@@ -202,7 +203,7 @@ export class Sieve_Colors extends Sieve_Base {
     }
 }
 
-export function best_move_jump(primary_sieves = [], return_others) {
+export function get_my_solutions(primary_sieves = []) {
     let my_solutions = solutions.filter(solution => {
         for (let sieve of primary_sieves) {
             if (sieve.test(solution) === false) {
@@ -211,6 +212,11 @@ export function best_move_jump(primary_sieves = [], return_others) {
         }
         return true
     })
+    return my_solutions
+}
+
+export function best_move_jump(primary_sieves = [], return_others) {
+    let my_solutions = get_my_solutions(primary_sieves)
     // my_solutions = solutions.slice(0,5) //Taking down the results
     console.log("solutions remaining", my_solutions.length, "sample", my_solutions.slice(0, 5).map(a => a.word))
     //Prepare a list to step through so that we can go quickly
@@ -312,7 +318,16 @@ export function best_move_jump(primary_sieves = [], return_others) {
         }
         color = color.join("")
         //Return the guess at the colors in the word
-        return [best_word, color]
+        //Asemble an object of the best word
+        let best_object = {
+            best_word: best_word,
+            best_score: best_score,
+            best_average: best_score * my_solutions.length,
+            color: color,
+            num_solutions_remaining: my_solutions.length,
+            string_solutions_remaining: my_solutions.map(x => x.word)
+        }
+        return [best_word, best_object]
     } else {
         return best_word
     }

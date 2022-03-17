@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Project for helping in wordle games.\r Written in javaScript, to be run in browser on mobile.\r Attempt to run most buttons and interactions through html - not using canvas.",
   "main": "main.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/jgilles23/wordlehelper/issues"
   },
-  "homepage": "https://github.com/jgilles23/wordlehelper#readme"
+  "homepage": "https://github.com/jgilles23/wordlehelper#readme",
+  "dependencies": {
+    "codemirror": "^5.65.1",
+    "jstat": "^1.9.5"
+  }
 }

@@ -1,4 +1,4 @@
-import {Sieve_Colors, best_move_jump} from "./guesser3.js"
+import { Sieve_Colors, best_move_jump } from "./guesser3.js"
 
 console.log("Welcome to the console for Wordle Helper!");
 
@@ -39,7 +39,7 @@ class WordLine {
             }
         }
     }
-    setWord(word, color="kkkkk") {
+    setWord(word, color = "kkkkk") {
         word = word.toUpperCase()
         this.tiles.forEach(function (tile, index) {
             tile.setCharacter(word[index])
@@ -53,13 +53,13 @@ class WordLine {
         }
         this.editable = false;
         //Change colors of the tiles
-        this.tiles.forEach( tile => tile.setColor());
+        this.tiles.forEach(tile => tile.setColor());
     }
     makeEditable() {
         this.div.className = "line editable"
         this.editable = true;
         //Change the colors of the tiles
-        this.tiles.forEach( tile => tile.setColor());
+        this.tiles.forEach(tile => tile.setColor());
     }
 }
 
@@ -71,7 +71,7 @@ class Tile {
         this.setColor("k")
         let changeColor = this.changeColor
         let me = this;
-        this.div.onclick = function() {changeColor.apply(me)};
+        this.div.onclick = function () { changeColor.apply(me) };
         this.setCharacter("?")
     }
     setCharacter(character) {
@@ -112,7 +112,7 @@ class Tile {
             case "y": this.color = "g"; break;
         }
         this.setColor()
-        
+
     }
 
 
@@ -123,7 +123,7 @@ class Typewriter {
         this.line = line;
         this.div = document.createElement("div");
         this.div.className = "control";
-        this.div.onclick = function() {line.typewriter()};
+        this.div.onclick = function () { line.typewriter() };
         this.div.innerHTML = "&#9000;";
     }
 }
@@ -133,7 +133,7 @@ class Pencil {
         this.line = line;
         this.div = document.createElement("div");
         this.div.className = "control";
-        this.div.onclick = function() {line.makeEditable()};
+        this.div.onclick = function () { line.makeEditable() };
         this.div.innerHTML = "&#9998;";
     }
 }
@@ -146,7 +146,7 @@ class GenerateLine {
         this.buttonDiv = document.createElement("div");
         this.buttonDiv.className = "clickButton";
         this.div.appendChild(this.buttonDiv);
-        this.buttonDiv.onclick = function() {game.makeLine()};
+        this.buttonDiv.onclick = function () { game.makeLine() };
         this.buttonDiv.innerHTML = "Generate Word";
     }
 }
@@ -164,19 +164,30 @@ class Game {
         //Pull the options buttons
         let me = this;
         this.refresh_button = document.getElementById("refresh-button");
-        this.refresh_button.onclick = function(){me.reload()};
-        this.clear_button = document.getElementById("clear-button");
-        this.clear_button.onclick = function(){me.clearLine()};
+        this.refresh_button.onclick = function () { me.reload() };
         this.edit_button = document.getElementById("edit-button");
-        this.edit_button.onclick = function(){me.lines.slice(-1)[0].typewriter()};
+        this.edit_button.onclick = function () { me.lines.slice(-1)[0].typewriter() };
+        //Help button
         this.help_button = document.getElementById("help-button")
-        this.help_button.onclick = function() {
+        this.help_button.onclick = function () {
             document.getElementById("help-menu").style.display = "initial"
         }
         this.help_close = document.getElementById("close-help")
-        this.help_close.onclick = function() {
+        this.help_close.onclick = function () {
             document.getElementById("help-menu").style.display = "none"
         }
+        //Hamburger menu
+        this.hamburger_button = document.getElementById("hamburger-button")
+        this.hamburger_button.onclick = function () {
+            if (document.getElementById("hamburger-menu").style.display === "none" ||
+                document.getElementById("hamburger-menu").style.display === "") {
+                document.getElementById("hamburger-menu").style.display = "initial"
+            } else {
+                document.getElementById("hamburger-menu").style.display = "none"
+            }
+        }
+        this.clear_button = document.getElementById("clear-button");
+        this.clear_button.onclick = function () { me.clearLine() };
         //Generate the first word
         this.makeBlankLine();
         this.lines[0].setWord("roate"); //soare
@@ -188,7 +199,7 @@ class Game {
         let [word, color] = this.calculate_line()
         this.makeBlankLine()
         // console.log(word)
-        this.lines[this.lines.length-1].setWord(word, color)
+        this.lines[this.lines.length - 1].setWord(word, color)
     }
     clearLine() {
         //Delete the most recent line from the screen
@@ -200,15 +211,20 @@ class Game {
             this.lines.slice(-1)[0].setWord("?????")
         }
     }
-    calculate_line() {
-        //Get words and clues
+    get_sieves() {
         let words_with_clues = this.get_words_and_clues()
         let sieves = []
         for (let word in words_with_clues) {
             sieves.push(new Sieve_Colors(word, words_with_clues[word]))
         }
+        return sieves
+    }
+    calculate_line() {
+        //Get words and clues
+        let sieves = this.get_sieves()
         //Calculate the next move
-        let [next_word, colors] = best_move_jump(sieves, true)
+        let [next_word, best_object] = best_move_jump(sieves, true)
+        let colors = best_object.color
         return [next_word, colors]
     }
     makeBlankLine() {
@@ -224,14 +240,17 @@ class Game {
         this.lines.forEach(line => {
             let word = ""
             let clues = ""
-            line.tiles.forEach( tile => {
+            line.tiles.forEach(tile => {
                 word = word + tile.character;
                 clues = clues + tile.color;
             })
-            word =word.toLowerCase()
+            word = word.toLowerCase()
             words_with_clues[word] = clues
         })
         return words_with_clues
+    }
+    set_text_remaining() {
+        
     }
 }
 

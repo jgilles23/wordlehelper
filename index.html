@@ -11,6 +11,7 @@
         * {
             --wordWidth: 80vmin;
             --lrMargin: calc((100vw - var(--wordWidth))/2);
+            --lrTopMargin: calc(var(--lrMargin) - 6vmin);
             --tileWidth: calc(var(--wordWidth) / 5.5);
             --tbSpace: calc((var(--wordWidth) - 5*var(--tileWidth))/4);
             --tbSpaceEditable: calc(var(--tbSpace)*4);
@@ -33,9 +34,8 @@
             padding-top: var(--tbSpace);
             /* padding-bottom: 1vmin; */
             /* border-bottom: calc(var(--tileWidth) / 17) solid black; */
-            padding-left: calc(var(--lrMargin) - 6vmin);
-            padding-right: calc(var(--lrMargin) - 6vmin);
-            ;
+            padding-left: var(--lrTopMargin);
+            padding-right: var(--lrTopMargin);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -119,6 +119,24 @@
             align-self: center;
             text-align: justify;
         }
+
+        .text-line {
+            padding-top: var(--tbSpace);
+            padding-left: var(--lrTopMargin);
+            padding-right: var(--lrTopMargin);
+            font-size: 3vmin;
+            font-weight: normal;
+        }
+
+        .labeled-button {
+            background-color: lightgrey;
+            font-size: 3vmin;
+            padding: 1vmin 2vmin;
+            border-radius: 1.8vmin;
+            text-align: center;
+            /* width: calc(var(--wordWidth)*1); */
+        }
+
     </style>
 </head>
 
@@ -162,9 +180,22 @@
         <div>Wordle Helper</div>
         <div class="top-line-buttons">
             <img id="refresh-button" src="./icons/redo-arrow.png" class="top-line-button"></img>
-            <img id="clear-button" src="./icons/math-multiplication.png" class="top-line-button"></img>
-            <img id="edit-button" src="./icons/edit-pen.png" class="top-line-button"></img>
+            <!-- <img id="clear-button" src="./icons/math-multiplication.png" class="top-line-button"></img> -->
+            <!-- <img id="edit-button" src="./icons/edit-pen.png" class="top-line-button"></img> -->
             <img id="help-button" src="./icons/question-mark.png" class="top-line-button"></img>
+            <img id="hamburger-button" src="./icons/hamburger-menu.png" class="top-line-button"></img>
+        </div>
+    </div>
+
+    <div id="hamburger-menu" class="hidden">
+        <div class="top-line">
+            <div id="clear-button" class="labeled-button">Clear Guess</div>
+            <div id="edit-button" class="labeled-button">Edit Guess</div>
+            <div id="challende-button" class="labeled-button">Enter Challenge</div>
+        </div>
+        <div class="text-line">
+            <div>Current solutions remaining: <span id="solutions-remaining"></span></div>
+            <div>Average solutions remaining after guess: <span id="average-after"></span></div>
         </div>
     </div>
 
